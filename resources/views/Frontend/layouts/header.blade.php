@@ -17,6 +17,9 @@
                         <a class="nav-link text-white" href="#contact">Contact</a>
                     </li>
                     <li class="nav-item">
+                        <a class="btn btn-info ms-3" href="{{ route('loginCompany') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="btn btn-warning ms-3" href="{{ route('registerCompany') }}">Register</a>
                     </li>
                 </ul>
