@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{{ URL::asset('frontend/assets/css/all.min.css') }}" />
     <link rel="stylesheet" href="{{ URL::asset('frontend/assets/css/animate.css') }}" />
     <link rel="stylesheet" href="{{ URL::asset('frontend/assets/js/jquery-3.7.1.min.js') }}" />
+    <link rel="stylesheet" href="{{ URL::asset('frontend/assets/css/sweetalert2.min.css') }}" />
 </head>
 
 <body>
@@ -22,6 +23,7 @@
     <script src="{{ URL::asset('frontend/assets/js/mdb.umd.min.js') }}"></script>
     <script src="{{ URL::asset('frontend/assets/js/mdb.min.js') }}"></script>
     <script src="{{ URL::asset('frontend/assets/js/wow.min.js') }}"></script>
+    <script src="{{ URL::asset('frontend/assets/js/SweetAlert2.js') }}"></script>
     <!-- Navbar Scroll Effect -->
     <script>
         new WOW().init();

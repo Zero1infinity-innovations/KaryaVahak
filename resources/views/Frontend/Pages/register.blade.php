@@ -32,15 +32,44 @@
         color: red;
         font-size: 0.875rem;
     }
+
+    .blur-background {
+        filter: blur(3px);
+        pointer-events: none;
+    }
 </style>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        @if (Session::has('success'))
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: '{{ Session::get('success') }}',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        @elseif (Session::has('error'))
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'error',
+                title: '{{ Session::get('error') }}',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        @endif
+    });
+</script>
 @section('section')
     <div class="container mt-5">
-        <div class="card mx-auto shadow wow animate__animated animate__fadeInUp" style="max-width: 600px;">
+        <div class="card mx-auto shadow wow animate__animated animate__fadeInUp" id="formWrapper" style="max-width: 600px;">
             <div class="card-header text-center bg-primary text-white">
                 <h4>Register Your Company on Karyavahak</h4>
             </div>
             <div class="card-body">
-                <form action="" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('storeCompany') }}" id="company-registration-form" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
 
                     <div class="mb-3">
@@ -48,6 +77,13 @@
                         <input type="text" id="name" name="name" class="form-control" required
                             value="{{ old('name') }}" onkeyup="validateName()">
                         <div id="nameError" class="error"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Company Owner Name</label>
+                        <input type="text" id="coname" name="coname" class="form-control" required
+                            value="{{ old('name') }}" onkeyup="validateCOName()">
+                        <div id="conameError" class="error"></div>
                     </div>
 
                     <div class="mb-3">
@@ -96,9 +132,21 @@
                     </div>
 
                     <div class="text-end">
-                        <button class="btn btn-success">Register Company</button>
+                        <button type="submit" id="registerBtn" class="btn btn-success">
+                            <span id="btnSpinner" class="spinner-border spinner-border-sm me-2 d-none" role="status"
+                                aria-hidden="true"></span>
+                            <span id="btnText">Register Company</span>
+                        </button>
                     </div>
                 </form>
+            </div>
+        </div>
+        <div id="fullPageSpinner"
+            class="d-none position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center"
+            style="z-index: 9999;">
+            <div class="text-center text-white">
+                <div class="spinner-border text-light" role="status" style="width: 3rem; height: 3rem;"></div>
+                <div class="mt-3 fs-5">Processing...</div>
             </div>
         </div>
     </div>
@@ -155,6 +203,17 @@
             }
         }
 
+        function validateCOName() {
+            const coNameInput = document.getElementById("coname");
+            const conameError = document.getElementById("conameError");
+            const coNameRegex = /^[A-Za-z. ]+$/;
+            if (!coNameRegex.test(coNameInput.value)) {
+                conameError.textContent = "Please enter a valid name";
+            } else {
+                conameError.textContent = '';
+            }
+        }
+
         // email
         function validateEmail() {
             const emailInput = document.getElementById('email');
@@ -194,5 +253,18 @@
                 error.textContent = "";
             }
         }
+
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById("company-registration-form");
+            form.addEventListener("submit", function() {
+                document.getElementById("fullPageSpinner").classList.remove("d-none");
+                document.getElementById("registerBtn").disabled = true;
+
+                // Optional blur
+                const wrapper = document.getElementById("formWrapper");
+                if (wrapper) wrapper.classList.add("blur-background");
+            });
+        });
     </script>
 @endsection
