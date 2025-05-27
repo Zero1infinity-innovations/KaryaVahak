@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Helpers\MailHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Frontend\Company;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -57,6 +58,12 @@ class HomeController extends Controller
         $validated['password'] = Hash::make($validated['password']);
 
         $company = Company::create($validated);
+
+        $user = new User();
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->password = $validated['password'];
+        $user->save();
 
         if ($company) {
 
